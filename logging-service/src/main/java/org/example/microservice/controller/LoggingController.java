@@ -1,7 +1,5 @@
 package org.example.microservice.controller;
 
-import org.apache.juli.logging.LogFactory;
-import org.apache.logging.log4j.LogManager;
 import org.example.microservice.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
