@@ -20,9 +20,14 @@ public class LoggingController {
         return messages.values().toString();
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<Void> login(@RequestBody Message msg) {
-        logger.info(msg.toString());
+        if (messages.containsKey(msg.getId())) {
+            logger.info("Got duplicate with id: {}", msg.getId());
+            return ResponseEntity.ok().build();
+        }
+
+        logger.info(msg.getText());
         messages.put(msg.getId(), msg.getText());
         return ResponseEntity.ok().build();
     }

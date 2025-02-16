@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
+import java.time.Duration;
 import java.util.UUID;
 
 @RestController
@@ -26,6 +28,13 @@ public class FacadeController {
     @PostMapping("/facade-service")
     public String postFacadeService(@RequestBody String text) {
         var msg = new Message(UUID.randomUUID(), text);
-        return loggingClient.post().uri("/login").contentType(MediaType.APPLICATION_JSON).body(Mono.just(msg), Message.class).retrieve().bodyToMono(String.class).block();
+        return loggingClient.post()
+                .uri("/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(msg), Message.class)
+                .retrieve()
+                .bodyToMono(String.class)
+                .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(2)))
+                .block();
     }
 }
