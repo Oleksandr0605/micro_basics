@@ -1,5 +1,4 @@
 package org.example.microservice.controller;
-
 import org.example.microservice.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,14 +20,19 @@ public class LoggingController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody Message msg) {
+    public ResponseEntity<String> login(@RequestBody Message msg) {
+//        if (Math.random() > 0.7) {
+//            logger.info("Failure for retry");
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Temporary failure");
+//        }
         if (messages.containsKey(msg.getId())) {
             logger.info("Got duplicate with id: {}", msg.getId());
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("Duplicate login");
         }
 
         logger.info(msg.getText());
         messages.put(msg.getId(), msg.getText());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Login successful");
     }
 }
