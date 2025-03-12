@@ -4,11 +4,10 @@
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Використовуємо Spring Boot Starter Parent для узгодження версій -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.2</version> <!-- або вибрана тобою актуальна версія Spring Boot 3.x -->
+        <version>3.2.2</version>
         <relativePath/>
     </parent>
 
