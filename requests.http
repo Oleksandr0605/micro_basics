@@ -52,3 +52,23 @@ Content-Type: application/json
 
 "msg10"
 ###
+POST http://localhost:8081/facade-service
+Content-Type: application/json
+
+"msg11"
+###
+POST http://localhost:8081/facade-service
+Content-Type: application/json
+
+"msg12"
+###
+POST http://localhost:8081/facade-service
+Content-Type: application/json
+
+"msg13"
+###
+POST http://localhost:8081/facade-service
+Content-Type: application/json
+
+"msg14"
+###

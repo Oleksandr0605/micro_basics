@@ -13,9 +13,13 @@ public class HazelcastConfig {
     public HazelcastInstance hazelcastInstance() {
         Config config = new Config();
         QueueConfig queueConfig = new QueueConfig("messageQueue");
-        queueConfig.setBackupCount(1);
+        queueConfig.setBackupCount(2);
+        queueConfig.setAsyncBackupCount(0);
         config.addQueueConfig(queueConfig);
         config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
+        config.getNetworkConfig().getJoin().getTcpIpConfig()
+                .setEnabled(true)
+                .addMember("127.0.0.1");
         return Hazelcast.newHazelcastInstance(config);
     }
 }
