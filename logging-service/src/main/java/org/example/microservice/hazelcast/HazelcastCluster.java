@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class HazelcastCluster {
 
-    @Bean
+    @Bean("hazelcastInstanceLogging")
     public HazelcastInstance hazelcastInstance() {
         Config config = new Config();
         config.setInstanceName("hazelcast-instance");

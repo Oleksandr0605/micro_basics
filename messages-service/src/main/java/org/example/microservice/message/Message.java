@@ -22,14 +22,15 @@ public class Message {
         return text;
     }
 
-    public static Message fromString(String value) {
+    public Message(String value) {
         String[] parts = value.split("\\|", 2);
         if (parts.length != 2) {
             throw new IllegalArgumentException("Invalid message format. Expected format: 'uuid|messageText'");
         }
         UUID id = UUID.fromString(parts[0]);
         String text = parts[1];
-        return new Message(id, text);
+        this.id = id;
+        this.text = text;
     }
 
     public String toString() {
