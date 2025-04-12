@@ -84,7 +84,7 @@ public class FacadeController {
             }
         }
         if (messageResponse == null) {
-            throw new RuntimeException("All messages failed.");
+            messageResponse = new HashMap<>();
         }
         return messageResponse + ":\n" + loggingResponse;
     }
