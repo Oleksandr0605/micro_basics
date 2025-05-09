@@ -1,11 +1,11 @@
-GET http://localhost:8081/facade-service
+GET http://localhost:58719/facade-service
 Accept: text/html
 ###
 
-POST http://localhost:8081/facade-service
+POST http://localhost:58719/facade-service
 Content-Type: application/json
 
-"msg1"
+"msg3"
 ###
 POST http://localhost:8081/facade-service
 Content-Type: application/json

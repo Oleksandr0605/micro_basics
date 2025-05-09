@@ -1,6 +1,8 @@
 package org.example.microservice.controller;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
+import com.orbitz.consul.Consul;
+import com.orbitz.consul.KeyValueClient;
 import org.example.microservice.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +25,16 @@ public class LoggingController {
 
     private final HazelcastInstance hazelcastInstance;
     private final IMap<UUID, String> loggingMap;
+    private final Consul consul;
 
     @Autowired
     public LoggingController(HazelcastInstance hazelcastInstance) {
         this.hazelcastInstance = hazelcastInstance;
-        this.loggingMap = hazelcastInstance.getMap("loggingMap");
+        this.consul = Consul.builder().build();
+        KeyValueClient kvClient = consul.keyValueClient();
+        String loggingMapName = kvClient.getValueAsString("logging_map_name")
+                .orElse("defaultQueue");
+        this.loggingMap = hazelcastInstance.getMap(loggingMapName);
     }
 
     @GetMapping("/login-history")

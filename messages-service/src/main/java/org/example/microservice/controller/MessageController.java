@@ -3,6 +3,8 @@ package org.example.microservice.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hazelcast.collection.IQueue;
+import com.orbitz.consul.Consul;
+import com.orbitz.consul.KeyValueClient;
 import org.example.microservice.message.Message;
 import com.hazelcast.core.HazelcastInstance;
 import jakarta.annotation.PostConstruct;
@@ -16,13 +18,13 @@ import java.util.concurrent.ConcurrentHashMap;
 @RestController
 public class MessageController {
     private final Map<UUID, String> messageStore = new ConcurrentHashMap<>();
-    private final ObjectMapper objectMapper;
+    private final Consul consul;
 
     private final HazelcastInstance hazelcastInstance;
 
     public MessageController(HazelcastInstance hazelcastInstance) {
         this.hazelcastInstance = hazelcastInstance;
-        this.objectMapper = new ObjectMapper();
+        this.consul = Consul.builder().build();
     }
 
     @GetMapping("/message")
@@ -33,7 +35,10 @@ public class MessageController {
     @PostConstruct
     public void startMessagePollingThread() {
         new Thread(() -> {
-            IQueue<String> messageQueue = hazelcastInstance.getQueue("messageQueue");
+            KeyValueClient kvClient = consul.keyValueClient();
+            String queueName = kvClient.getValueAsString("message_queue_name")
+                    .orElse("defaultQueue");
+            IQueue<String> messageQueue = hazelcastInstance.getQueue(queueName);
             while (true) {
                 String msg_str = messageQueue.poll();
                 if (msg_str != null) {
